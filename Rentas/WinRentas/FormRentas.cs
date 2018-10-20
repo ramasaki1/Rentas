@@ -10,16 +10,16 @@ using System.Windows.Forms;
 
 namespace WinRentas
 {
-    public partial class Form1 : Form
+    public partial class FormRentas : Form
     {
-        public Form1()
+        public FormRentas()
         {
             InitializeComponent();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void FormRentas_Load(object sender, EventArgs e)
         {
-            MessageBox.Show("Hola Mundo");
+
         }
     }
 }
