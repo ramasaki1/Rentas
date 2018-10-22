@@ -49,6 +49,9 @@
     <Compile Include="FormClientes.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="FormClientes.Designer.cs">
+      <DependentUpon>FormClientes.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormLogin.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -100,7 +103,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="FormClientes.Designer1" />
     <None Include="Properties\DataSources\BL.Rentas.Cliente.datasource" />
     <None Include="Properties\DataSources\BL.Rentas.ClientesBL.datasource" />
     <None Include="Properties\DataSources\BL.Rentas.Producto.datasource" />

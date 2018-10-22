@@ -29,22 +29,19 @@ namespace Win.Rentas
             var cliente = (Cliente)listaClientesBindingSource.Current;
             var resultado = _clientes.GuardarCliente(cliente);
 
-            if(resultado == true)
+            if(resultado==true)
             {
                 listaClientesBindingSource.ResetBindings(false);
                 DeshabilitarHabilitarBotones(true);
-
             }
             else
             {
-                MessageBox.Show("Ocurrio un error guardando al cliente");
-
+                MessageBox.Show("Ocurrio un error guardando el cliente");
             }
         }
 
         private void bindingNavigatorAddNewItem_Click(object sender, EventArgs e)
         {
-
             _clientes.AgregarCliente();
             listaClientesBindingSource.MoveLast();
 
@@ -55,43 +52,48 @@ namespace Win.Rentas
         {
             bindingNavigatorMoveFirstItem.Enabled = valor;
             bindingNavigatorMoveLastItem.Enabled = valor;
-            bindingNavigatorMovePreviousItem.Enabled = valor;
             bindingNavigatorMoveNextItem.Enabled = valor;
+            bindingNavigatorMovePreviousItem.Enabled = valor;
             bindingNavigatorPositionItem.Enabled = valor;
             bindingNavigatorAddNewItem.Enabled = valor;
             bindingNavigatorDeleteItem.Enabled = valor;
-            toolStripCancelar.Visible = !valor;
+            toolStripButtonCancelar.Visible = !valor;
         }
 
         private void bindingNavigatorDeleteItem_Click(object sender, EventArgs e)
         {
-            if (iDTextBox.Text != "")
+            
+            if (idTextBox.Text != "")
             {
-                var ID = Convert.ToInt32(iDTextBox.Text);
-                var resultado = _clientes.EliminarCliente(ID);
-
-                if (resultado == true)
+                var resultado = MessageBox.Show("Desea Eliminar este registro?", "Eliminar", MessageBoxButtons.YesNo);
+                if (resultado == DialogResult.Yes)
                 {
-                    listaClientesBindingSource.ResetBindings(false);
-
+                    var id = Convert.ToInt32(idTextBox.Text);
+                    Eliminar(id);
                 }
-                else
-                {
-                    MessageBox.Show("Ocurrio un error al eliminar un producto");
-                }
+                
             }
         }
 
-        private void InitializeComponent()
+        private void Eliminar(int id)
         {
-            this.SuspendLayout();
-            // 
-            // FormClientes
-            // 
-            this.ClientSize = new System.Drawing.Size(313, 261);
-            this.Name = "FormClientes";
-            this.ResumeLayout(false);
+            
+            var resultado = _clientes.EliminarCliente(id);
 
+            if (resultado == true)
+            {
+                listaClientesBindingSource.ResetBindings(false);
+            }
+            else
+            {
+                MessageBox.Show("Ocurrio un error al eliminar el cliente");
+            }
+        }
+
+        private void toolStripButtonCancelar_Click(object sender, EventArgs e)
+        {
+            DeshabilitarHabilitarBotones(true);
+            Eliminar(0);
         }
     }
 }
