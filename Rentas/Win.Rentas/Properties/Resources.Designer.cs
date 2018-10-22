@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WinRentas.Properties {
+namespace Win.Rentas.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace WinRentas.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("WinRentas.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Win.Rentas.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -63,9 +63,9 @@ namespace WinRentas.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Candado {
+        internal static System.Drawing.Bitmap secure_vpn_connection {
             get {
-                object obj = ResourceManager.GetObject("Candado", resourceCulture);
+                object obj = ResourceManager.GetObject("secure-vpn-connection", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

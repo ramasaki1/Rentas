@@ -8,18 +8,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace WinRentas
+namespace Win.Rentas
 {
     public partial class FormRentas : Form
     {
         public FormRentas()
         {
             InitializeComponent();
-        }
-
-        private void FormRentas_Load(object sender, EventArgs e)
-        {
-
         }
     }
 }

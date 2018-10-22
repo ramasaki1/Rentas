@@ -1,4 +1,4 @@
-﻿namespace WinRentas
+﻿namespace Win.Rentas
 {
     partial class FormRentas
     {
@@ -37,7 +37,6 @@
             this.ClientSize = new System.Drawing.Size(284, 261);
             this.Name = "FormRentas";
             this.Text = "Rentas";
-            this.Load += new System.EventHandler(this.FormRentas_Load);
             this.ResumeLayout(false);
 
         }

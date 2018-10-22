@@ -1,15 +1,8 @@
 ﻿using BL.Rentas;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace WinRentas
+namespace Win.Rentas
 {
     public partial class FormLogin : Form
     {
@@ -29,7 +22,6 @@ namespace WinRentas
 
         private void button1_Click(object sender, EventArgs e)
         {
-
             string usuario;
             string contrasena;
 
@@ -37,16 +29,15 @@ namespace WinRentas
             contrasena = textBox2.Text;
 
             var resultado = _seguridad.Autorizar(usuario, contrasena);
-
+            
             if (resultado == true)
             {
                 this.Close();
             }
             else
             {
-                MessageBox.Show("Usuario o Contraseña Incorrecta");
+                MessageBox.Show("Usuario o contraseña incorrecta");
             }
         }
     }
-
-}        
+}

@@ -8,23 +8,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace WinRentas
+namespace Win.Rentas
 {
     public partial class FormMenu : Form
     {
         public FormMenu()
         {
             InitializeComponent();
-        }
-
-        private void reportesToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void FormMenu_Load(object sender, EventArgs e)
-        {
-            Login();
         }
 
         private void loginToolStripMenuItem_Click(object sender, EventArgs e)
@@ -57,6 +47,11 @@ namespace WinRentas
             var formRentas = new FormRentas();
             formRentas.MdiParent = this;
             formRentas.Show();
+        }
+
+        private void FormMenu_Load(object sender, EventArgs e)
+        {
+            Login();
         }
     }
 }
