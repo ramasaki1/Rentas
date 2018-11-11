@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,69 +10,44 @@ namespace BL.Rentas
 {
     public class ClientesBL
     {
+        contexto _contexto;
         public BindingList<Cliente> ListaClientes { get; set; }
         public ClientesBL()
         {
+            _contexto = new contexto();
             ListaClientes = new BindingList<Cliente>();
 
-            var cliente1 = new Cliente();
-            cliente1.Id = 1;
-            cliente1.Nombre = "Daniel Ramirez";
-            cliente1.Email = "dr@unah.hn";
-            cliente1.Telefono = "111";
-            cliente1.Direccion = "SPS";
-
-            ListaClientes.Add(cliente1);
-
-            var cliente2 = new Cliente();
-            cliente2.Id = 2;
-            cliente2.Nombre = "Roney Morales";
-            cliente2.Email = "rm@unah.hn";
-            cliente2.Telefono = "222";
-            cliente2.Direccion = "Santa Rita";
-
-            ListaClientes.Add(cliente2);
-
-            var cliente3 = new Cliente();
-            cliente3.Id = 3;
-            cliente3.Nombre = "Angie Bautista";
-            cliente3.Email = "ab@unah.hn";
-            cliente3.Telefono = "333";
-            cliente3.Direccion = "El Progreso";
-
-            ListaClientes.Add(cliente3);
-
-            var cliente4 = new Cliente();
-            cliente4.Id = 4;
-            cliente4.Nombre = "Andrea Guadron";
-            cliente4.Email = "ag@unah.hn";
-            cliente4.Telefono = "444";
-            cliente4.Direccion = "Choloma";
-
-            ListaClientes.Add(cliente4);
-
-            var cliente5 = new Cliente();
-            cliente5.Id = 1;
-            cliente5.Nombre = "Gabriela Ortiz";
-            cliente5.Email = "go@unah.hn";
-            cliente5.Telefono = "555";
-            cliente5.Direccion = "Tela";
-
-            ListaClientes.Add(cliente5);
+            
         }
 
         public BindingList<Cliente> ObtenerClientes()
         {
+            _contexto.Clientes.Load();
+            ListaClientes = _contexto.Clientes.Local.ToBindingList();
             return ListaClientes;
         }
 
-        public bool GuardarCliente(Cliente cliente)
+        public void CancelarCambios()
         {
-            if (cliente.Id == 0)
+            foreach (var item in _contexto.ChangeTracker.Entries())
             {
-                cliente.Id = ListaClientes.Max(item => item.Id) + 1;
+                item.State = EntityState.Unchanged;
+                item.Reload();
             }
-            return true;
+        }
+
+        public Resultado GuardarCliente(Cliente cliente)
+        {
+           var resultado = validar(cliente);
+            if (resultado.Exitoso == false)
+            {
+                return resultado;
+            }
+
+            _contexto.SaveChanges();
+
+            resultado.Exitoso = true;
+            return resultado;
         }
 
         public void AgregarCliente()
@@ -87,6 +63,7 @@ namespace BL.Rentas
                 if (cliente.Id == id)
                 {
                     ListaClientes.Remove(cliente);
+                    _contexto.SaveChanges();
                     return true;
                 }
             }
@@ -94,30 +71,37 @@ namespace BL.Rentas
             return false;
         }
 
-        private Validacion validar(Cliente cliente)
+        private Resultado validar(Cliente cliente)
         {
-            var resultado = new Validacion();
+            var resultado = new Resultado();
+
             resultado.Exitoso = true;
 
-            if(cliente.Nombre !="")
+            if (string.IsNullOrEmpty(cliente.Nombre) == true)
             {
                 resultado.Mensaje = "Ingrese un nombre valido";
                 resultado.Exitoso = false;
             }
 
-            if (cliente.Email != "")
+            if (string.IsNullOrEmpty(cliente.Email) == true)
             {
                 resultado.Mensaje = "Ingrese un Correo Electronico valido";
                 resultado.Exitoso = false;
             }
 
-            if (cliente.Telefono != "")
+            if (string.IsNullOrEmpty(cliente.Telefono) == true)
             {
                 resultado.Mensaje = "Ingrese Un numero telefonico valido";
                 resultado.Exitoso = false;
             }
 
-            if (cliente.Direccion != "")
+            if (cliente.CiudadId == 0)
+            {
+                resultado.Mensaje = "Seleccione una Ciudad";
+                resultado.Exitoso = false;
+            }
+
+            if (string.IsNullOrEmpty(cliente.Direccion) == true)
             {
                 resultado.Mensaje = "Ingrese una direccion valida";
                 resultado.Exitoso = false;
@@ -134,6 +118,12 @@ namespace BL.Rentas
         public string Email { get; set; }
         public string Telefono { get; set; }
         public string Direccion { get; set; }
+
+        
+        public int CiudadId { get; set; }
+        public Ciudad Ciudad { get; set; }
+
+        public Byte[] Foto { get; set; }
         public bool Activo { get; set; }
 
         public Cliente()

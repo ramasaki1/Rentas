@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,29 +15,43 @@ namespace Win.Rentas
     public partial class FormClientes : Form
     {
         ClientesBL _clientes;
-
+        CiudadBL _ciudadBL;
         public FormClientes()
         {
             InitializeComponent();
 
             _clientes = new ClientesBL();
             listaClientesBindingSource.DataSource = _clientes.ObtenerClientes();
+
+            _ciudadBL = new CiudadBL();
+            listaCiudadesBindingSource.DataSource = _ciudadBL.ObtenerCategorias();
+
         }
 
         private void listaClientesBindingNavigatorSaveItem_Click(object sender, EventArgs e)
         {
             listaClientesBindingSource.EndEdit();
             var cliente = (Cliente)listaClientesBindingSource.Current;
-            var resultado = _clientes.GuardarCliente(cliente);
 
-            if(resultado==true)
+            if (fotoPictureBox.Image != null)
             {
-                listaClientesBindingSource.ResetBindings(false);
-                DeshabilitarHabilitarBotones(true);
+                cliente.Foto = Program.imageToByteArray(fotoPictureBox.Image);
             }
             else
             {
-                MessageBox.Show("Ocurrio un error guardando el cliente");
+                cliente.Foto = null;
+            }
+            var resultado = _clientes.GuardarCliente(cliente);
+
+            if(resultado.Exitoso == true)
+            {
+                listaClientesBindingSource.ResetBindings(false);
+                DeshabilitarHabilitarBotones(true);
+                MessageBox.Show("Cliente Guardado");
+            }
+            else
+            {
+                MessageBox.Show(resultado.Mensaje);
             }
         }
 
@@ -92,8 +107,44 @@ namespace Win.Rentas
 
         private void toolStripButtonCancelar_Click(object sender, EventArgs e)
         {
+            _clientes.CancelarCambios();
             DeshabilitarHabilitarBotones(true);
-            Eliminar(0);
+          
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            var producto = (Cliente)listaClientesBindingSource.Current;
+            if (producto != null)
+            {
+
+
+                openFileDialog1.ShowDialog();
+                var archivo = openFileDialog1.FileName;
+
+                if (archivo != "")
+                {
+                    var fileInfo = new FileInfo(archivo);
+                    var fileStream = fileInfo.OpenRead();
+
+                    fotoPictureBox.Image = Image.FromStream(fileStream);
+
+                }
+            }
+            else
+            {
+                MessageBox.Show("Cree un producto antes de asignarle una imagen");
+            }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            fotoPictureBox.Image = null;
+        }
+
+        private void direccionLabel_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

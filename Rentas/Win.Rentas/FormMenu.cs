@@ -53,5 +53,12 @@ namespace Win.Rentas
         {
             Login();
         }
+
+        private void proveedoresToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var FormProveedores = new FormProveedores();
+            FormProveedores.MdiParent = this;
+            FormProveedores.Show();
+        }
     }
 }

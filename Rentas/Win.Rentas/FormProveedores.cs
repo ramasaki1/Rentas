@@ -11,42 +11,39 @@ using System.Windows.Forms;
 
 namespace Win.Rentas
 {
-    public partial class FormProductos : Form
+    public partial class FormProveedores : Form
     {
-        ProductosBL _productos;
+        ProveedoresBL _proveedores;
 
-        public FormProductos()
+        public FormProveedores()
         {
             InitializeComponent();
 
-            _productos = new ProductosBL();
-            listaProductosBindingSource.DataSource = _productos.ObtenerProductos();
+            _proveedores = new ProveedoresBL();
+            listaProveedoresBindingSource.DataSource = _proveedores.ObtenerProveedor();
         }
 
-        private void listaProductosBindingNavigatorSaveItem_Click(object sender, EventArgs e)
+        private void listaProveedoresBindingNavigatorSaveItem_Click(object sender, EventArgs e)
         {
-            listaProductosBindingSource.EndEdit();
-            var producto = (Producto)listaProductosBindingSource.Current;
+            listaProveedoresBindingSource.EndEdit();
+            var proveedor = (Proveedor)listaProveedoresBindingSource.Current;
+            var resultado = _proveedores.GuardarProveedor(proveedor);
 
-            var resultado = _productos.GuardarProducto(producto);
-
-            if (resultado.Exitoso == true)
+            if (resultado == true)
             {
-                listaProductosBindingSource.ResetBindings(false);
+                listaProveedoresBindingSource.ResetBindings(false);
                 DeshabilitarHabilitarBotones(true);
-                MessageBox.Show("Producto Guardado");
             }
             else
             {
-                MessageBox.Show(resultado.Mensaje);
+                MessageBox.Show("Ocurrio un error guardando el producto");
             }
-            
         }
 
         private void bindingNavigatorAddNewItem_Click(object sender, EventArgs e)
         {
-            _productos.AgregarProducto();
-            listaProductosBindingSource.MoveLast();
+            _proveedores.AgregarProveedor();
+            listaProveedoresBindingSource.MoveLast();
 
             DeshabilitarHabilitarBotones(false);
         }
@@ -58,7 +55,6 @@ namespace Win.Rentas
             bindingNavigatorMovePreviousItem.Enabled = valor;
             bindingNavigatorMoveNextItem.Enabled = valor;
             bindingNavigatorPositionItem.Enabled = valor;
-
             bindingNavigatorAddNewItem.Enabled = valor;
             bindingNavigatorDeleteItem.Enabled = valor;
             toolStripButtonCancelar.Visible = !valor;
@@ -66,24 +62,26 @@ namespace Win.Rentas
 
         private void bindingNavigatorDeleteItem_Click(object sender, EventArgs e)
         {
-            if (idTextBox.Text != "")
+            if (iDTextBox.Text != "")
             {
                 var resultado = MessageBox.Show("Desea eliminar este registro?", "Eliminar", MessageBoxButtons.YesNo);
                 if (resultado == DialogResult.Yes)
                 {
-                    var id = Convert.ToInt32(idTextBox.Text);
-                    Eliminar(id);
+                    var ID = Convert.ToInt32(iDTextBox.Text);
+                    Eliminar(ID);
                 }
             }
+
         }
 
-        private void Eliminar(int id)
+        private void Eliminar(int ID)
         {
-            var resultado = _productos.EliminarProducto(id);
+            
+            var resultado = _proveedores.EliminarProveedor(ID);
 
             if (resultado == true)
             {
-                listaProductosBindingSource.ResetBindings(false);
+                listaProveedoresBindingSource.ResetBindings(false);
             }
             else
             {
@@ -93,14 +91,8 @@ namespace Win.Rentas
 
         private void toolStripButtonCancelar_Click(object sender, EventArgs e)
         {
-            _productos.CancelarCambios();
             DeshabilitarHabilitarBotones(true);
-
-        }
-
-        private void FormProductos_Load(object sender, EventArgs e)
-        {
-
+            Eliminar(0);
         }
     }
 }
