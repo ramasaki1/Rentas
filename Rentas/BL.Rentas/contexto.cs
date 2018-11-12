@@ -10,7 +10,7 @@ namespace BL.Rentas
 {
    public class contexto:DbContext
     {
-        public contexto():base()
+        public contexto():base("VideoJuegos")
         {
 
         }
@@ -27,6 +27,7 @@ namespace BL.Rentas
         public DbSet<Cliente> Clientes { get; set; }
         public DbSet<Ciudad> Ciudad { get; set; }
         public DbSet<Usuario> Usuario { get; set; }
+        public DbSet<Proveedor> Proveedor { get; set; }
         internal void _Savechanges()
         {
           throw new NotImplementedException();
